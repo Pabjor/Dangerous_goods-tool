@@ -1214,7 +1214,7 @@ async function exportStoreToExcel() {
   const COLOR_RED    = 'FFC0000A';
   const COLOR_ORANGE = 'FFE07000';
 
-  function buildSheetFromData(sheetName, rows) {
+ function buildSheetFromData(sheetName, rows) {
     const ws = wb.addWorksheet(sheetName);
     ws.columns = [
       { key:'rank',      width:6  },
@@ -1229,28 +1229,61 @@ async function exportStoreToExcel() {
       { key:'snittdag',  width:14 },
       { key:'dagarkvar', width:14 },
     ];
+
+    // ── Grupprubrik-rad ──
+    const groupRow = ws.addRow(['','','','',
+      '📦 LAGER','',
+      '📋 MINIMUMLAGER','',
+      '📈 FÖRSÄLJNING','',''
+    ]);
+    ws.mergeCells('E1:F1');
+    ws.mergeCells('G1:H1');
+    ws.mergeCells('I1:K1');
+
+    const groupStyles = [
+      { col:'E', bg:'FFE8FFFE', color:'FF2bb8a4' },
+      { col:'G', bg:'FFFFF8E8', color:'FFB07000' },
+      { col:'I', bg:'FFF5EEFF', color:'FF7030A0' },
+    ];
+    groupStyles.forEach(({ col, bg, color }) => {
+      groupRow.getCell(col).fill = { type:'pattern', pattern:'solid', fgColor:{argb:bg} };
+      groupRow.getCell(col).font = { bold:true, name:'Segoe UI', size:8, color:{argb:color} };
+      groupRow.getCell(col).alignment = { horizontal:'center', vertical:'middle' };
+    });
+    // Tomma celler i gruppraden – vit bakgrund centrerat
+    ['A','B','C','D'].forEach(col => {
+      groupRow.getCell(col).fill = { type:'pattern', pattern:'solid', fgColor:{argb:'FFFFFFFF'} };
+      groupRow.getCell(col).alignment = { horizontal:'center', vertical:'middle' };
+    });
+
+    // ── Kolumnrubriker ──
     const headerRow = ws.addRow([
       '#','Artikelnr','Beskrivning','Vol/enhet',
-      'Lager antal','Liter i lager','ROP antal','ROP i volym',
+      'Lager antal','Liter i lager',
+      'ROP antal','ROP i volym',
       'Försäljning 30d','Snitt/dag','Dagar kvar'
     ]);
-    headerRow.eachCell(cell => {
-      cell.fill = { type:'pattern', pattern:'solid', fgColor:{argb:COLOR_HEADER} };
+    headerRow.eachCell((cell, colNum) => {
       cell.font = { bold:true, name:'Segoe UI', size:9 };
-      cell.alignment = { vertical:'middle' };
+      cell.alignment = { horizontal:'center', vertical:'middle' };
       cell.border = { bottom:{style:'medium', color:{argb:'FF2bb8a4'}} };
+      if (colNum === 5 || colNum === 6)       cell.fill = { type:'pattern', pattern:'solid', fgColor:{argb:'FFE8FFFE'} };
+      else if (colNum === 7 || colNum === 8)  cell.fill = { type:'pattern', pattern:'solid', fgColor:{argb:'FFFFF8E8'} };
+      else if (colNum >= 9)                   cell.fill = { type:'pattern', pattern:'solid', fgColor:{argb:'FFF5EEFF'} };
+      else                                    cell.fill = { type:'pattern', pattern:'solid', fgColor:{argb:'FF45DEC9'} };
     });
-    ws.views = [{ state:'frozen', ySplit:1 }];
-    ws.autoFilter = { from:{row:1,column:1}, to:{row:1,column:11} };
+
+    ws.views = [{ state:'frozen', ySplit:2 }]; // Frys BÅDA raderna
+    ws.autoFilter = { from:{row:2,column:1}, to:{row:2,column:11} };
 
     let totalLiters = 0, totalRopQty = 0, totalRopLiters = 0;
+
     rows.forEach((row, idx) => {
       const volDisplay = row.volPerUnit < 1
         ? Math.round(row.volPerUnit * 1000) + ' ml'
         : row.volPerUnit.toLocaleString('sv-SE', {maximumFractionDigits:3}) + ' L';
       const snitText = row.salesPerDay > 0
-        ? row.salesPerDay.toLocaleString('sv-SE', {maximumFractionDigits:1}) + ' st/dag'
-        : '–';
+        ? row.salesPerDay.toLocaleString('sv-SE', {maximumFractionDigits:1}) + ' st/dag' : '–';
       const daysText = row.daysLeft !== null ? row.daysLeft + ' dagar' : '–';
 
       const dr = ws.addRow([
@@ -1263,15 +1296,25 @@ async function exportStoreToExcel() {
         snitText,
         daysText,
       ]);
-      dr.eachCell(cell => {
-        cell.font = { name:'Segoe UI', size:9 };
-        cell.fill = { type:'pattern', pattern:'solid', fgColor:{argb:COLOR_WHITE} };
-        cell.border = { bottom:{style:'thin', color:{argb:'FFEEEEEE'}} };
-      });
-      dr.getCell('F').font = { name:'Segoe UI', size:9, bold:true, color:{argb:COLOR_GREEN} };
-      dr.getCell('H').font = { name:'Segoe UI', size:9, bold:true, color:{argb:COLOR_TEAL} };
 
-      // Färgkoda dagar kvar
+      dr.eachCell((cell, colNum) => {
+        cell.font = { name:'Segoe UI', size:9 };
+        cell.alignment = { horizontal:'center', vertical:'middle' };
+        cell.border = { bottom:{style:'thin', color:{argb:'FFEEEEEE'}} };
+
+        if (colNum === 5 || colNum === 6)       cell.fill = { type:'pattern', pattern:'solid', fgColor:{argb:'FFF0FFFE'} };
+        else if (colNum === 7 || colNum === 8)  cell.fill = { type:'pattern', pattern:'solid', fgColor:{argb:'FFFFFBF0'} };
+        else if (colNum >= 9)                   cell.fill = { type:'pattern', pattern:'solid', fgColor:{argb:'FFFDF5FF'} };
+        else                                    cell.fill = { type:'pattern', pattern:'solid', fgColor:{argb:'FFFFFFFF'} };
+      });
+
+      // Beskrivning – vänsterjusterad
+      dr.getCell('C').alignment = { horizontal:'left', vertical:'middle' };
+
+      // Specialfärger
+      dr.getCell('F').font = { name:'Segoe UI', size:9, bold:true, color:{argb:COLOR_GREEN} };
+      dr.getCell('H').font = { name:'Segoe UI', size:9, bold:true, color:{argb:COLOR_TEAL}  };
+
       if (row.daysLeft !== null) {
         const daysColor = row.daysLeft <= 7 ? COLOR_RED : row.daysLeft <= 14 ? COLOR_ORANGE : COLOR_GREEN;
         dr.getCell('K').font = { name:'Segoe UI', size:9, bold:true, color:{argb:daysColor} };
@@ -1282,19 +1325,22 @@ async function exportStoreToExcel() {
       totalRopLiters += row.ropLiter;
     });
 
+    // ── Totalrad ──
     const totalRow = ws.addRow([
-      '', `Totalt (${rows.length} varor)`, '', '', '',
+      '', `Totalt (${rows.length} varor)`, '', '',  '',
       Math.round(totalLiters * 100) / 100,
       totalRopQty,
       formatVolume(totalRopLiters),
       '','',''
     ]);
-    totalRow.eachCell(cell => {
-      cell.fill = { type:'pattern', pattern:'solid', fgColor:{argb:COLOR_TOTAL} };
-      cell.font = { bold:true, name:'Segoe UI', size:9 };
+    totalRow.eachCell((cell, colNum) => {
+      cell.fill  = { type:'pattern', pattern:'solid', fgColor:{argb:'FFE8F8F6'} };
+      cell.font  = { bold:true, name:'Segoe UI', size:9 };
+      cell.alignment = { horizontal:'center', vertical:'middle' };
       cell.border = { top:{style:'medium', color:{argb:'FF2bb8a4'}} };
     });
-  }
+    totalRow.getCell('B').alignment = { horizontal:'left', vertical:'middle' };
+}
 
   const top25    = currentMatched.slice(0, 25);
   const fullList = currentMatched;
