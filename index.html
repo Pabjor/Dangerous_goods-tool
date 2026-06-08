@@ -639,82 +639,155 @@ async function showFileTimestamp() {
 // ══════════════════════════════════════════
 const STORES = {};
 [
-  ["0101","region 3","Marcus","Emporia"],["0102","region 3","Marcus","Mobilia"],
-  ["0103","region 3","Marcus","Triangeln"],["0104","region 3","Marcus","Väla"],
-  ["0106","region 6","Marcus","Nova, Lund"],["0110","region 3","Marcus","Stenbocken"],
-  ["0113","region 3","Marcus","Södergatan"],["0114","region 6","Marcus","C4 Shopping"],
-  ["0122","region 3","Marcus","Trelleborg"],["0124","region 3","Marcus","Söder Galleria"],
-  ["0144","region 6","Marcus","Hallarna"],["0146","region 5","Marcus","Växjö, Storgatan"],
-  ["0152","region 6","Marcus","Halmstad, Storgatan"],["0158","region 5","Marcus","Grand Samarkand"],
-  ["0161","region 6","Marcus","Burlöv Center"],["0167","region 6","Marcus","Galleria Bouleva"],
-  ["0168","region 3","Marcus","Jägersro Center"],["0169","region 6","Marcus","Ystad"],
-  ["0174","region 5","Marcus","Giraffen"],["0177","region 3","Marcus","Kronprinsen"],
-  ["0184","region 6","Marcus","Karlskrona"],["0195","region 3","Marcus","Hansa City"],
-  ["0198","region 3","Marcus","Rosengård Centrum"],["0199","region 3","Marcus","Södra Forstadsgatan"],
-  ["0201","region 6","Marcus","Falkenberg"],["0203","region 3","Marcus","Värnhemstorget"],
-  ["0228","region 5","Marcus","Nässjö"],["0230","region 5","Marcus","Vetlanda"],
-  ["0232","region 6","Marcus","Center Syd"],["0242","region 6","Marcus","Karlshamn"],
+  ["0101","region 3","Marcus","Emporia"],
+  ["0102","region 3","Marcus","Mobilia"],
+  ["0103","region 3","Marcus","Triangeln"],
+  ["0104","region 3","Marcus","Väla"],
+  ["0105","region 10","Nora","Nacka Forum"],
+  ["0106","region 6","Marcus","Nova, Lund"],
+  ["0107","region 4","Rikard","Solna Centrum"],
+  ["0108","region 4","Rikard","Kista Galleria"],
+  ["0109","region 9","Pablo","Mirum Galleria"],
+  ["0110","region 3","Marcus","Stenbocken"],
+  ["0111","region 9","Pablo","Partille, Allum"],
+  ["0113","region 3","Marcus","Södergatan"],
+  ["0114","region 6","Marcus","C4 Shopping"],
+  ["0115","region 9","Pablo","Mölndal Galleria"],
+  ["0116","region 7","Rikard","Västerås, Vasagatan"],
+  ["0117","region 9","Pablo","Marieberg Galleria"],
+  ["0118","region 7","Rikard","Västerås, Erikslund"],
+  ["0119","region 8","Rikard","Borlänge, Kupolen"],
+  ["0120","region 4","Rikard","Sollentuna Centrum"],
+  ["0121","region 9","Pablo","Kongahälla Shopping"],
+  ["0122","region 3","Marcus","Trelleborg"],
+  ["0123","region 7","Rikard","Uppsala, S:t Per"],
+  ["0124","region 3","Marcus","Söder Galleria"],
+  ["0125","region 5","Pablo","Jönköping, Östra Storgatan"],
+  ["0126","region 2","Nora","Farsta Centrum"],
+  ["0127","region 10","Nora","Södertälje"],
+  ["0128","region 9","Pablo","Trollhättan, Etage"],
+  ["0129","region 9","Pablo","Karlstad, Drottninggatan"],
+  ["0130","region 7","Rikard","Uppsala, Gränbystaden"],
+  ["0131","region 4","Rikard","Upplands Väsby"],
+  ["0132","region 2","Nora","Skärholmen"],
+  ["0133","region 9","Pablo","Bergvik Köpcenter"],
+  ["0134","region 9","Pablo","Töcksfors Center"],
+  ["0135","region 4","Rikard","Täby Centrum"],
+  ["0136","region 10","Nora","Tyresö Centrum"],
+  ["0137","region 1","Pablo","Frölunda Torg"],
+  ["0138","region 2","Nora","Gallerian"],
+  ["0139","region 1","Pablo","Nordstan"],
+  ["0140","region 10","Nora","Haninge Centrum"],
+  ["0141","region 5","Pablo","Torp Köpcentrum"],
+  ["0142","region 4","Rikard","Vällingby Centrum"],
+  ["0143","region 9","Pablo","Charlottenberg"],
+  ["0144","region 6","Marcus","Hallarna"],
+  ["0145","region 7","Rikard","Eskilstuna, Cityhuset"],
+  ["0146","region 5","Marcus","Växjö, Storgatan"],
+  ["0147","region 5","Pablo","Kungsmässan"],
+  ["0148","region 2","Nora","Liljeholmstorget"],
+  ["0149","region 1","Pablo","Skövde, Storgatan"],
+  ["0150","region 2","Nora","Götgatan"],
+  ["0151","region 2","Nora","Klarabergsgatan"],
+  ["0152","region 6","Marcus","Halmstad, Storgatan"],
+  ["0153","region 8","Rikard","Valbo Köpcentrum"],
+  ["0154","region 1","Pablo","Krämaren"],
+  ["0155","region 8","Rikard","Skellefteå"],
+  ["0156","region 8","Rikard","Luleå, Smedjan"],
+  ["0157","region 8","Rikard","Sundsvall, Birsta City"],
+  ["0158","region 5","Marcus","Grand Samarkand"],
+  ["0159","region 10","Nora","Sickla Galleria"],
+  ["0160","region 4","Rikard","Jakobsberg"],
+  ["0161","region 6","Marcus","Burlöv Center"],
+  ["0162","region 8","Rikard","Östersund"],
+  ["0163","region 2","Nora","Drottninggatan 37"],
+  ["0164","region 4","Rikard","Mörby Centrum"],
+  ["0165","region 4","Rikard","Fältöversten"],
+  ["0166","region 8","Rikard","Umeå, Avion Shopping"],
+  ["0167","region 6","Marcus","Galleria Bouleva"],
+  ["0168","region 3","Marcus","Jägersro Center"],
+  ["0169","region 6","Marcus","Ystad"],
+  ["0170","region 9","Pablo","Linköping, Tanneforsgatan"],
+  ["0171","region 2","Nora","Kungens Kurva"],
+  ["0172","region 8","Rikard","Falun"],
+  ["0173","region 2","Nora","Sveavägen 76"],
+  ["0174","region 5","Marcus","Giraffen"],
+  ["0175","region 5","Pablo","Borås, Pallas"],
+  ["0176","region 1","Pablo","Alingsås, Storken"],
+  ["0177","region 3","Marcus","Kronprinsen"],
+  ["0178","region 9","Pablo","Norrköping, Domino"],
+  ["0179","region 7","Rikard","Uppsala, Kvarnen"],
+  ["0180","region 8","Rikard","Umeå, Utopia"],
+  ["0181","region 9","Pablo","Nyköping, Västerport"],
+  ["0182","region 7","Rikard","Uppsala, Dragarbrunnsgatan"],
+  ["0183","region 10","Nora","Signalfabriken"],
+  ["0184","region 6","Marcus","Karlskrona"],
+  ["0185","region 4","Rikard","Åkersberga"],
+  ["0186","region 9","Pablo","Linköping, I-Huset"],
+  ["0187","region 5","Pablo","Huskvarna"],
+  ["0188","region 7","Rikard","Uppsala, Gottsunda"],
+  ["0189","region 5","Rikard","Visby, Österport"],
+  ["0190","region 2","Nora","Hötorget"],
+  ["0191","region 4","Rikard","Norrtälje"],
+  ["0192","region 9","Pablo","Katrineholm, Kvarnen"],
+  ["0193","region 10","Nora","Tumba Centrum"],
+  ["0194","region 10","Nora","Hallunda Centrum"],
+  ["0195","region 3","Marcus","Hansa City"],
+  ["0196","region 10","Nora","Weda Södertälje"],
+  ["0197","region 8","Rikard","Sandviken"],
+  ["0198","region 3","Marcus","Rosengård Centrum"],
+  ["0199","region 3","Marcus","Södra Forstadsgatan"],
+  ["0200","region 4","Rikard","Stockholm, Lindhagen"],
+  ["0201","region 6","Marcus","Falkenberg"],
+  ["0202","region 10","Nora","Port 73"],
+  ["0203","region 3","Marcus","Värnhemstorget"],
+  ["0204","region 1","Pablo","Vänersborg"],
+  ["0205","region 1","Pablo","Stenungsund"],
+  ["0206","region 7","Rikard","Bro Handel"],
+  ["0207","region 4","Rikard","Solna, MOS"],
+  ["0208","region 9","Pablo","Ingelsta Shopping"],
+  ["0209","region 2","Nora","Centralstation"],
+  ["0210","region 7","Rikard","Sala"],
+  ["0211","region 10","Nora","Sjötelegrafen"],
+  ["0212","region 7","Rikard","Avesta Galleria"],
+  ["0213","region 7","Rikard","Ludvika, Storgatan"],
+  ["0214","region 7","Rikard","Eskilstuna, Tuna Park"],
+  ["0215","region 8","Rikard","Gävle, Nian"],
+  ["0216","region 2","Nora","Västberga Handel"],
+  ["0217","region 8","Rikard","Piteå, Storgatan"],
+  ["0218","region 9","Pablo","Mellerud"],
+  ["0219","region 7","Rikard","Strängnäs"],
+  ["0221","region 7","Rikard","Bålsta Centrum"],
+  ["0222","region 8","Rikard","Sundsvall, Storgatan"],
+  ["0223","region 2","Nora","Globen Shopping"],
+  ["0224","region 4","Rikard","Bromma Blocks"],
+  ["0225","region 1","Pablo","Trollhättan, Odenhuset"],
+  ["0226","region 5","Pablo","Uddevalla, Kungsgatan"],
+  ["0227","region 9","Pablo","Strömstad Shopping"],
+  ["0228","region 5","Marcus","Nässjö"],
+  ["0229","region 10","Nora","Mölnvik"],
+  ["0230","region 5","Marcus","Vetlanda"],
+  ["0231","region 5","Pablo","Skene, Kungsfors"],
+  ["0232","region 6","Marcus","Center Syd"],
+  ["0233","region 10","Nora","Skogås Centrum"],
+  ["0234","region 5","Pablo","Västervik"],
+  ["0235","region 2","Nora","Rosenlundsgatan"],
+  ["0236","region 4","Rikard","Järfälla, Barkarby Gate"],
+  ["0237","region 9","Pablo","Mjölby"],
+  ["0238","region 9","Pablo","Ingelsta Handelsce"],
+  ["0239","region 4","Rikard","Stockholm, Fleminggatan"],
+  ["0240","region 4","Rikard","Stockholm, Hagastaden"],
+  ["0241","region 1","Pablo","Eriksberg Köpcentrum"],
+  ["0242","region 6","Marcus","Karlshamn"],
+  ["0243","region 1","Pablo","Göteborg, Fredsgatan"],
   ["0244","region 6","Marcus","Brännborn Center"],
-  ["0105","region 10","Nora","Nacka Forum"],["0126","region 2","Nora","Farsta Centrum"],
-  ["0127","region 10","Nora","Södertälje"],["0132","region 2","Nora","Skärholmen"],
-  ["0136","region 10","Nora","Tyresö Centrum"],["0138","region 2","Nora","Gallerian"],
-  ["0140","region 10","Nora","Haninge Centrum"],["0148","region 2","Nora","Liljeholmstorget"],
-  ["0150","region 2","Nora","Götgatan"],["0151","region 2","Nora","Klarabergsgatan"],
-  ["0159","region 10","Nora","Sickla Galleria"],["0163","region 2","Nora","Drottninggatan 37"],
-  ["0171","region 2","Nora","Kungens Kurva"],["0173","region 2","Nora","Sveavägen 76"],
-  ["0183","region 10","Nora","Signalfabriken"],["0190","region 2","Nora","Hötorget"],
-  ["0193","region 10","Nora","Tumba Centrum"],["0194","region 10","Nora","Hallunda Centrum"],
-  ["0196","region 10","Nora","Weda Södertälje"],["0202","region 10","Nora","Port 73"],
-  ["0209","region 2","Nora","Centralstation"],["0211","region 10","Nora","Sjötelegrafen"],
-  ["0216","region 2","Nora","Västberga Handel"],["0223","region 2","Nora","Globen Shopping"],
-  ["0229","region 10","Nora","Mölnvik"],["0233","region 10","Nora","Skogås Centrum"],
-  ["0235","region 2","Nora","Rosenlundsgatan"],["0247","region 10","Nora","Flemingsberg"],
-  ["0249","region 2","Nora","Hornstull Centrum"],["0248","region 10","Nora","Högdalen Centrum"],
-  ["0109","region 9","Pablo","Mirum Galleria"],["0111","region 9","Pablo","Partille, Allum"],
-  ["0115","region 9","Pablo","Mölndal Galleria"],["0117","region 9","Pablo","Marieberg Galleria"],
-  ["0121","region 9","Pablo","Kongahälla Shopping"],["0125","region 5","Pablo","Jönköping, Östra Storgatan"],
-  ["0128","region 9","Pablo","Trollhättan, Etage"],["0129","region 9","Pablo","Karlstad, Drottninggatan"],
-  ["0133","region 9","Pablo","Bergvik Köpcenter"],["0134","region 9","Pablo","Töcksfors Center"],
-  ["0137","region 1","Pablo","Frölunda Torg"],["0139","region 1","Pablo","Nordstan"],
-  ["0141","region 5","Pablo","Torp Köpcentrum"],["0143","region 9","Pablo","Charlottenberg"],
-  ["0147","region 5","Pablo","Kungsmässan"],["0149","region 1","Pablo","Skövde, Storgatan"],
-  ["0154","region 1","Pablo","Krämaren"],["0170","region 9","Pablo","Linköping, Tanneforsgatan"],
-  ["0175","region 5","Pablo","Borås, Pallas"],["0176","region 1","Pablo","Alingsås, Storken"],
-  ["0178","region 9","Pablo","Norrköping, Domino"],["0181","region 9","Pablo","Nyköping, Västerport"],
-  ["0186","region 9","Pablo","Linköping, I-Huset"],["0187","region 5","Pablo","Huskvarna"],
-  ["0192","region 9","Pablo","Katrineholm, Kvarnen"],["0204","region 1","Pablo","Vänersborg"],
-  ["0205","region 1","Pablo","Stenungsund"],["0208","region 9","Pablo","Ingelsta Shopping"],
-  ["0218","region 9","Pablo","Mellerud"],["0225","region 1","Pablo","Trollhättan, Odenhuset"],
-  ["0226","region 5","Pablo","Uddevalla, Kungsgatan"],["0227","region 9","Pablo","Strömstad Shopping"],
-  ["0231","region 5","Pablo","Skene, Kungsfors"],["0234","region 5","Pablo","Västervik"],
-  ["0237","region 9","Pablo","Mjölby"],["0238","region 9","Pablo","Ingelsta Handelsce"],
-  ["0241","region 1","Pablo","Eriksberg Köpcentrum"],["0243","region 1","Pablo","Göteborg, Fredsgatan"],
-  ["0245","region 5","Pablo","Jönköping, ASECS"],["0250","region 1","Pablo","Örebro, Köpmangatan"],
+  ["0245","region 5","Pablo","Jönköping, ASECS"],
+  ["0246","region 7","Rikard","Stockholm, Märsta"],
+  ["0247","region 10","Nora","Flemingsberg"],
+  ["0248","region 10","Nora","Högdalen Centrum"],
+  ["0249","region 2","Nora","Hornstull Centrum"],
+  ["0250","region 1","Pablo","Örebro, Köpmangatan"],
   ["0253","region 9","Pablo","Strömstad, Nordby"],
-  ["0107","region 4","Rikard","Solna Centrum"],["0108","region 4","Rikard","Kista Galleria"],
-  ["0116","region 7","Rikard","Västerås, Vasagatan"],["0118","region 7","Rikard","Västerås, Erikslund"],
-  ["0119","region 8","Rikard","Borlänge, Kupolen"],["0120","region 4","Rikard","Sollentuna Centrum"],
-  ["0123","region 7","Rikard","Uppsala, S:t Per"],["0130","region 7","Rikard","Uppsala, Gränbystaden"],
-  ["0131","region 4","Rikard","Upplands Väsby"],["0135","region 4","Rikard","Täby Centrum"],
-  ["0142","region 4","Rikard","Vällingby Centrum"],["0145","region 7","Rikard","Eskilstuna, Cityhuset"],
-  ["0153","region 8","Rikard","Valbo Köpcentrum"],["0155","region 8","Rikard","Skellefteå"],
-  ["0156","region 8","Rikard","Luleå, Smedjan"],["0157","region 8","Rikard","Sundsvall, Birsta City"],
-  ["0160","region 4","Rikard","Jakobsberg"],["0162","region 8","Rikard","Östersund"],
-  ["0164","region 4","Rikard","Mörby Centrum"],["0165","region 4","Rikard","Fältöversten"],
-  ["0166","region 8","Rikard","Umeå, Avion Shopping"],["0172","region 8","Rikard","Falun"],
-  ["0179","region 7","Rikard","Uppsala, Kvarnen"],["0180","region 8","Rikard","Umeå, Utopia"],
-  ["0182","region 7","Rikard","Uppsala, Dragarbrunnsgatan"],["0185","region 4","Rikard","Åkersberga"],
-  ["0188","region 7","Rikard","Uppsala, Gottsunda"],["0189","region 5","Rikard","Visby, Österport"],
-  ["0191","region 4","Rikard","Norrtälje"],["0197","region 8","Rikard","Sandviken"],
-  ["0200","region 4","Rikard","Stockholm, Lindhagen"],["0206","region 7","Rikard","Bro Handel"],
-  ["0207","region 4","Rikard","Solna, MOS"],["0210","region 7","Rikard","Sala"],
-  ["0212","region 7","Rikard","Avesta Galleria"],["0213","region 7","Rikard","Ludvika, Storgatan"],
-  ["0214","region 7","Rikard","Eskilstuna, Tuna Park"],["0215","region 8","Rikard","Gävle, Nian"],
-  ["0217","region 8","Rikard","Piteå, Storgatan"],["0219","region 7","Rikard","Strängnäs"],
-  ["0221","region 7","Rikard","Bålsta Centrum"],["0222","region 8","Rikard","Sundsvall, Storgatan"],
-  ["0224","region 4","Rikard","Bromma Blocks"],["0236","region 4","Rikard","Järfälla, Barkarby Gate"],
-  ["0239","region 4","Rikard","Stockholm, Fleminggatan"],["0240","region 4","Rikard","Stockholm, Hagastaden"],
-  ["0246","region 7","Rikard","Stockholm, Märsta"],["0252","region 8","Rikard","Örnsköldsvik"],
 ].forEach(([n,r,c,name]) => { STORES[n] = {region:r, consultant:c, shortName:name}; });
 
 function getInfo(sid) {
@@ -778,32 +851,88 @@ function normalizeItemNo(raw) {
 function findSidByName(storeName) {
   if (!storeName) return null;
   const name = String(storeName).trim().toLowerCase();
+
+  // 1. Direkta aliases – kända namnformat från DG-filen
   const aliases = {
+    // Gävle
     'gävle, gallerian nian': '0215',
     'gävle gallerian nian': '0215',
+    'gävle, nian': '0215',
+    // Sandviken
     'sandviken, gallerian sandviken': '0197',
     'sandviken': '0197',
+    // Huskvarna
     'huskvarna, rosengallerian': '0187',
     'huskvarna': '0187',
+    // Nordstan
+    'göteborg, nordstan': '0139',
+    'nordstan': '0139',
+    // Norrköping Mirum
+    'norrköping, mirum galleria': '0109',
+    // Sundsvall
+    'sundsvall, livli shopping c': '0157',
+    'sundsvall, birsta city': '0157',
+    // Linköping
+    'linköping, livli shopping c': '0186',
+    // Västerås
+    'västerås, livli shopping c': '0118',
+    // Kungens Kurva
+    'kungens kurva, livli shopping': '0171',
+    // Örnsköldsvik
+    'örnsköldsvik, port nio': '0252',
+    'örnsköldsvik': '0252',
+    // Huddinge – ej butiksnummer ännu
+    'huddinge': 'HUDDINGE',
+    // Hudiksvall – ej butiksnummer ännu
+    'hudiksvall': 'HUDIKSVALL',
+    // Skanstull
+    'skanstull': 'SKANSTULL',
+    // Löddeköpinge
+    'löddeköpinge, galleria center': '0232',
+    // Falkenberg
+    'falkenberg, nygatan': '0201',
+    // Karlshamn
+    'karlshamn, flaggenhuset': '0242',
+    // Malmö
+    'malmø, hansa city': '0195',
+    'malmö, hansa city': '0195',
+    'malmø, burlöv center': '0161',
+    'malmö, burlöv center': '0161',
   };
   if (aliases[name]) return aliases[name];
+
+  // 2. SE-prefix hantering (SE0139 → 0139)
+  const seMatch = name.match(/^se0*(\d+)/i);
+  if (seMatch) {
+    const num = seMatch[1].padStart(4, '0');
+    if (STORES[num]) return num;
+  }
+
+  // 3. Exakt match på shortName
   for (const [sid, info] of Object.entries(STORES)) {
     if (info.shortName.toLowerCase() === name) return sid;
   }
+
+  // 4. Stad-matchning (del innan komma)
   const city = name.split(',')[0].trim();
   for (const [sid, info] of Object.entries(STORES)) {
     const infoCity = info.shortName.toLowerCase().split(',')[0].trim();
     if (city === infoCity && name.includes(infoCity)) return sid;
   }
+
+  // 5. Fallback includes
   for (const [sid, info] of Object.entries(STORES)) {
     if (name.includes(info.shortName.toLowerCase())) return sid;
     if (info.shortName.toLowerCase().includes(name)) return sid;
   }
+
+  // 6. Komma-delad fallback
   const parts = name.split(',').map(p => p.trim());
   for (const [sid, info] of Object.entries(STORES)) {
     const infoParts = info.shortName.toLowerCase().split(',').map(p => p.trim());
-    if (parts.some(p => infoParts.some(ip => ip.includes(p) || p.includes(ip)))) return sid;
+    if (parts.some(p => p.length > 3 && infoParts.some(ip => ip.includes(p) || p.includes(ip)))) return sid;
   }
+
   return null;
 }
 
