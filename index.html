@@ -640,7 +640,7 @@ async function showFileTimestamp() {
 const STORES = {};
 [
   ["0101","region 3","Marcus","Emporia"],
-  ["0102","region 3","Marcus","Mobilia"],
+  ["0102","region 3","Marcus","Mobilia Shopping Centre"],
   ["0103","region 3","Marcus","Triangeln"],
   ["0104","region 3","Marcus","Väla"],
   ["0105","region 10","Nora","Nacka Forum"],
@@ -649,23 +649,24 @@ const STORES = {};
   ["0108","region 4","Rikard","Kista Galleria"],
   ["0109","region 9","Pablo","Mirum Galleria"],
   ["0110","region 3","Marcus","Stenbocken"],
-  ["0111","region 9","Pablo","Partille, Allum"],
+  ["0111","region 1","Pablo","Partille, Allum"],
+  ["0112","region 5","Pablo","Kalmar, Baronen"],
   ["0113","region 3","Marcus","Södergatan"],
   ["0114","region 6","Marcus","C4 Shopping"],
-  ["0115","region 9","Pablo","Mölndal Galleria"],
+  ["0115","region 1","Pablo","Mölndal Galleria"],
   ["0116","region 7","Rikard","Västerås, Vasagatan"],
-  ["0117","region 9","Pablo","Marieberg Galleria"],
-  ["0118","region 7","Rikard","Västerås, Erikslund"],
+  ["0117","region 1","Pablo","Marieberg Galleria"],
+  ["0118","region 7","Rikard","Västerås, Livli Shopping C"],
   ["0119","region 8","Rikard","Borlänge, Kupolen"],
   ["0120","region 4","Rikard","Sollentuna Centrum"],
-  ["0121","region 9","Pablo","Kongahälla Shopping"],
+  ["0121","region 1","Pablo","Kongahälla Shopping"],
   ["0122","region 3","Marcus","Trelleborg"],
   ["0123","region 7","Rikard","Uppsala, S:t Per"],
   ["0124","region 3","Marcus","Söder Galleria"],
   ["0125","region 5","Pablo","Jönköping, Östra Storgatan"],
   ["0126","region 2","Nora","Farsta Centrum"],
   ["0127","region 10","Nora","Södertälje"],
-  ["0128","region 9","Pablo","Trollhättan, Etage"],
+  ["0128","region 1","Pablo","Trollhättan, Etage"],
   ["0129","region 9","Pablo","Karlstad, Drottninggatan"],
   ["0130","region 7","Rikard","Uppsala, Gränbystaden"],
   ["0131","region 4","Rikard","Upplands Väsby"],
@@ -694,7 +695,7 @@ const STORES = {};
   ["0154","region 1","Pablo","Krämaren"],
   ["0155","region 8","Rikard","Skellefteå"],
   ["0156","region 8","Rikard","Luleå, Smedjan"],
-  ["0157","region 8","Rikard","Sundsvall, Birsta City"],
+  ["0157","region 8","Rikard","Sundsvall, Livli Shopping C"],
   ["0158","region 5","Marcus","Grand Samarkand"],
   ["0159","region 10","Nora","Sickla Galleria"],
   ["0160","region 4","Rikard","Jakobsberg"],
@@ -787,7 +788,10 @@ const STORES = {};
   ["0248","region 10","Nora","Högdalen Centrum"],
   ["0249","region 2","Nora","Hornstull Centrum"],
   ["0250","region 1","Pablo","Örebro, Köpmangatan"],
+  ["0252","region 8","Rikard","Örnsköldsvik"],
   ["0253","region 9","Pablo","Strömstad, Nordby"],
+  ["0254","region 8","Rikard","Hudiksvall"],
+  ["0257","region 1","Pablo","Göteborg, Backaplan"],
 ].forEach(([n,r,c,name]) => { STORES[n] = {region:r, consultant:c, shortName:name}; });
 
 function getInfo(sid) {
@@ -852,7 +856,7 @@ function findSidByName(storeName) {
   if (!storeName) return null;
   const name = String(storeName).trim().toLowerCase();
 
-  // 1. Direkta aliases – kända namnformat från DG-filen
+  // 1. Aliases – kända namnformat från DG-filen
   const aliases = {
     // Gävle
     'gävle, gallerian nian': '0215',
@@ -867,8 +871,6 @@ function findSidByName(storeName) {
     // Nordstan
     'göteborg, nordstan': '0139',
     'nordstan': '0139',
-    // Norrköping Mirum
-    'norrköping, mirum galleria': '0109',
     // Sundsvall
     'sundsvall, livli shopping c': '0157',
     'sundsvall, birsta city': '0157',
@@ -876,28 +878,38 @@ function findSidByName(storeName) {
     'linköping, livli shopping c': '0186',
     // Västerås
     'västerås, livli shopping c': '0118',
+    'västerås, erikslund': '0118',
     // Kungens Kurva
     'kungens kurva, livli shopping': '0171',
     // Örnsköldsvik
     'örnsköldsvik, port nio': '0252',
     'örnsköldsvik': '0252',
-    // Huddinge – ej butiksnummer ännu
-    'huddinge': 'HUDDINGE',
-    // Hudiksvall – ej butiksnummer ännu
-    'hudiksvall': 'HUDIKSVALL',
-    // Skanstull
-    'skanstull': 'SKANSTULL',
-    // Löddeköpinge
-    'löddeköpinge, galleria center': '0232',
     // Falkenberg
     'falkenberg, nygatan': '0201',
     // Karlshamn
     'karlshamn, flaggenhuset': '0242',
-    // Malmö
+    // Malmö varianter
     'malmø, hansa city': '0195',
     'malmö, hansa city': '0195',
     'malmø, burlöv center': '0161',
     'malmö, burlöv center': '0161',
+    // Mörby
+    'stockholm, mörby centrum': '0164',
+    'mörby centrum': '0164',
+    // Jakobsberg
+    'stockholm, jakobsbergs centrum': '0160',
+    'jakobsberg': '0160',
+    // Löddeköpinge
+    'löddeköpinge, galleria center': '0232',
+    // Trelleborg
+    'trelleborg , valengallerian': '0122',
+    // Hudiksvall
+    'hudiksvall, guldsmeden': '0254',
+    'hudiksvall': '0254',
+    // Backaplan
+    'göteborg, backaplan': '0257',
+    // Kalmar
+    'kalmar, baronen': '0112',
   };
   if (aliases[name]) return aliases[name];
 
